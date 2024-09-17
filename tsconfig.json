@@ -5,5 +5,5 @@
     "module": "commonjs",
     "noEmit": true
   },
-  "include": ["src/**/*.ts", "test/jest/**/*.ts"],
+  "include": ["src", "test", "scripts"],
 }

@@ -13,6 +13,7 @@ expectType<string>(definite);
 // gets an optional value
 const optional = pipe(data, get("type:A.a.?some.c"));
 expectType<O.Option<number>>(optional);
+// @ts-expect-error: should not return never
 expectError<O.Option<never>>(optional);
 
 // has checked record access
@@ -35,6 +36,8 @@ expectType<Eq.Eq<{ readonly a: { readonly b: string } }>>(infersEq);
 const infersOptionalEq = pipe(O.getEq(StringEq), Eq.contramap(get("a.b?")));
 expectType<Eq.Eq<{ readonly a: { readonly b: string | undefined | null } }>>(infersOptionalEq);
 
+// @ts-expect-error: get should enforce an Optional eq for an optional path
 expectError<Eq.Eq<{ a: { b: string | undefined | null } }>>(pipe(StringEq, Eq.contramap(get("a.b?"))));
 
+// @ts-expect-error: get should enforce a non-Optional eq for a non-optional (lens) path
 expectError<Eq.Eq<{ a: { b: string } }>>(pipe(O.getEq(StringEq), Eq.contramap(get("a.b"))));
